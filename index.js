@@ -7,7 +7,7 @@ const runScript = async () => {
     // * Configuring driver
     let driver = await new Builder().setEdgeService(service).forBrowser('MicrosoftEdge').build();
 
-    // * < -- Logging in as admin -- >
+    // * < === Logging in as admin === >
     // ? Naviage to login
     await driver.get('https://admin-demo.nopcommerce.com/');
     // ? Identifying inputs and button
@@ -22,7 +22,7 @@ const runScript = async () => {
     await adminPass.sendKeys('admin');
     await loginButton.click();
 
-    // * < -- Navigating to create customer screen + adding data -- >
+    // * < === Navigating to create customer screen + adding data === >
     // ? Clicking customer dropdown nav
     const cusDropdown = await driver.findElement(By.css('li.nav-item i.fa-user'));
     await cusDropdown.click();
@@ -56,10 +56,16 @@ const runScript = async () => {
     await taxExempt.click();
     await adminComment.sendKeys('Test user created by admin');
     await saveBtn.click();
+    // ? Saving success message from alert + logging to console
+    const successNotif = await driver.findElement(By.css('div.alert.alert-success.alert-dismissable'));
+    const successTxt = await successNotif.getText();
+    console.log(successTxt.toUpperCase());
 
-    // * < -- Logging out (clicking logout button) -- >
+    // * < === Logging out (clicking logout button) === >
     const logOutBtn = await driver.findElement(By.css('a[href="/logout"]'));
     await logOutBtn.click();
+    // ? Closing browser
+    await driver.quit();
 }
 
 runScript();
