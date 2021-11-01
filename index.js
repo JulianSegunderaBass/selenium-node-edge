@@ -2,10 +2,10 @@ const { Builder, By, Key, util } = require('selenium-webdriver');
 // * Module for the edge selenium webdriver
 const edge = require('selenium-webdriver/edge');
 // * Specifying path to local edge driver
-let service = new edge.ServiceBuilder("C:/selenium-webdrivers/msedgedriver.exe");
+const service = new edge.ServiceBuilder("C:/selenium-webdrivers/msedgedriver.exe");
 const runScript = async () => {
     // * Configuring driver
-    let driver = await new Builder().setEdgeService(service).forBrowser('MicrosoftEdge').build();
+    const driver = await new Builder().setEdgeService(service).forBrowser('MicrosoftEdge').build();
 
     // * < === Logging in as admin === >
     // ? Naviage to login
@@ -56,16 +56,26 @@ const runScript = async () => {
     await taxExempt.click();
     await adminComment.sendKeys('Test user created by admin');
     await saveBtn.click();
-    // ? Saving success message from alert + logging to console
+    // ? Saving success message from alert
     const successNotif = await driver.findElement(By.css('div.alert.alert-success.alert-dismissable'));
     const successTxt = await successNotif.getText();
-    console.log(successTxt.toUpperCase());
+    // ? Text for verification
+    const verifyText = 'The new customer has been added successfully.';
+    // ? Custom assertion to verify the message (should return true)
+    const successAssertion = successTxt.includes(verifyText);
+    // ? Logging values
+    console.log(`Message confirmation: ${successTxt}`);
+    console.log(`Assertion passed?: ${successAssertion}`);
 
-    // * < === Logging out (clicking logout button) === >
-    const logOutBtn = await driver.findElement(By.css('a[href="/logout"]'));
-    await logOutBtn.click();
-    // ? Closing browser
-    await driver.quit();
+    // * < === Logging out (clicking logout button) only if assertion is passed === >
+    if (successAssertion) {
+        const logOutBtn = await driver.findElement(By.css('a[href="/logout"]'));
+        await logOutBtn.click();
+        // ? Closing browser
+        await driver.quit();
+    } else {
+        console.log('TEST FAILED');
+    }
 }
 
 runScript();
