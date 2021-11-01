@@ -1,8 +1,17 @@
+// TODO: Steps to test
+// Navigate to https://admin-demo.nopcommerce.com/. 
+// Login using credentials (admin@yourstore.com/admin)
+// Click on Customers Add New
+// Populate Customer info screen
+// Click on Save
+// Capture success message.
+// Logout & Close the Browser.
+
 const { Builder, By, Key, util } = require('selenium-webdriver');
 // * Module for the edge selenium webdriver
 const edge = require('selenium-webdriver/edge');
 // * Specifying path to local edge driver
-const service = new edge.ServiceBuilder("C:/selenium-webdrivers/msedgedriver.exe");
+const service = new edge.ServiceBuilder('C:/selenium-webdrivers/msedgedriver.exe');
 const runScript = async () => {
     // * Configuring driver
     const driver = await new Builder().setEdgeService(service).forBrowser('MicrosoftEdge').build();
