@@ -6,6 +6,8 @@ const service = new edge.ServiceBuilder("C:/selenium-webdrivers/msedgedriver.exe
 const runScript = async () => {
     // * Configuring driver
     const driver = await new Builder().setEdgeService(service).forBrowser('MicrosoftEdge').build();
+    // ? Maximizing window to make all elements visible
+    await driver.manage().window().maximize();
 
     // * < === Logging in as admin === >
     // ? Naviage to login
